@@ -9,12 +9,16 @@ specifiers:
   file-loader: ^6.2.0
   html-webpack-plugin: ^5.5.0
   jest: ^28.1.0
+  lodash.isequal: ^4.5.0
   mini-css-extract-plugin: ^2.6.0
   optimize-css-assets-webpack-plugin: ^6.0.1
   webpack: ^5.72.1
   webpack-cli: ^4.9.2
   webpack-dev-server: ^4.9.0
   webpack-merge: ^5.8.0
+
+dependencies:
+  lodash.isequal: 4.5.0
 
 devDependencies:
   '@babel/core': 7.17.10
@@ -4139,6 +4143,10 @@ packages:
   /lodash.debounce/4.0.8:
     resolution: {integrity: sha1-gteb/zCmfEAF/9XiUVMArZyk168=}
     dev: true
+
+  /lodash.isequal/4.5.0:
+    resolution: {integrity: sha1-QVxEePK8wwEgwizhDtMib30+GOA=}
+    dev: false
 
   /lodash.memoize/4.1.2:
     resolution: {integrity: sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=}
