@@ -1,3 +1,5 @@
 webpack/webpack.common.js
 webpack/webpack.dev.js
 webpack/webpack.prod.js
+
+*.test.js
