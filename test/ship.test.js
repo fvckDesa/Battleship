@@ -77,6 +77,7 @@ describe("test isSunk method", () => {
         ship.hit(0);
         ship.hit(1);
         ship.hit(2);
+        console.log(ship.hitPoints);
         expect(ship.isSunk()).toBe(true);
     });
 
