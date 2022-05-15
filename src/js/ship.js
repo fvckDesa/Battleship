@@ -11,7 +11,7 @@ function Ship(length) {
     }
 
     function isSunk() {
-        return hitPoints.filter(pos => !pos).length === 0;
+        return hitPoints.every(pos => pos);
     }
 
     return {
