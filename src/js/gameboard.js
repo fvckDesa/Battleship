@@ -25,7 +25,7 @@ function GameBoard(shipsCoords) {
     }
 
     function isAllShipsSunk() {
-        return ships.every(ship => ship.isSunk);
+        return ships.every(ship => ship.isSunk());
     }
 
     function _setBoard() {
