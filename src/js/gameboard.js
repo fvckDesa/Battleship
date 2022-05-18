@@ -11,6 +11,8 @@ function GameBoard(shipsCoords) {
     /* array of ships  */
     const ships = new Array(NUM_SHIPS).fill(null).map((pos, i) => new Ship(shipsLength[i]));
 
+    let lastShipSunk;
+
     _setBoard();
 
     function receiveAttack({ x, y }) {
@@ -18,8 +20,14 @@ function GameBoard(shipsCoords) {
         if(attackPos !== null) {
             const { numShip, pos } = attackPos;
             ships[numShip].hit(pos);
+            if(ships[numShip].isSunk()) {
+                lastShipSunk = numShip;
+            } else {
+                lastShipSunk = null;
+            }
             return true;
         } else {
+            lastShipSunk = null;
             return false;
         }
     }
@@ -43,7 +51,21 @@ function GameBoard(shipsCoords) {
 
     return {
         receiveAttack,
-        isAllShipsSunk
+        isAllShipsSunk,
+        board,
+        get coordShipSunk() {
+            if(lastShipSunk === null) return null;
+            const coords = [];
+            for(let y = 0; y < board.length; y++) {
+                for(let x = 0; x < board[y].length; x++) {
+                    if(board[y][x]?.numShip === lastShipSunk) {
+                        coords.push({ x, y });
+                    }
+                }
+            }
+
+            return coords;
+        }
     }
 }
 

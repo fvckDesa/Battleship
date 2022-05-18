@@ -3,8 +3,7 @@ import './style.css';
 import GameBoard from './js/gameboard';
 import Player from'./js/player';
 import * as DOM from './js/dom';
-
-DOM.renderWinner("player");
+import { coordsFromIndex, indexFromCoords } from './js/utility';
 
 const coordsShip = [
     { x: 0, y: 0, axis: "y" },
@@ -14,12 +13,15 @@ const coordsShip = [
     { x: 4, y: 4, axis: "x" }
 ];
 
-const computer = Player();
-const board1 = GameBoard(coordsShip);
-const board2 = GameBoard(computer.coordsShips);
-
+const dialog = document.querySelector("dialog");
 const computerBoard = [...document.querySelectorAll("#computer-board>.square")];
 const playerBoard = [...document.querySelectorAll("#player-board>.square")];
+
+let computer, board1, board2;
+
+startGame();
+
+dialog.addEventListener("close", startGame);
 
 computerBoard.forEach((square, i) => {
     square.addEventListener("click", () => {
@@ -28,17 +30,17 @@ computerBoard.forEach((square, i) => {
             square.classList.contains("there-is-not-ship")
         ) return;
         
-        const coords = i.toString().padStart(2, "0");
-        const attackResult = board2.receiveAttack({ x: +coords[1], y: +coords[0] });
+        const coords = coordsFromIndex(i);
+        const attackResult = board2.receiveAttack(coords);
 
-        if(attackResult) {
-            square.classList.add("there-is-ship");
-        } else {
-            square.classList.add("there-is-not-ship");
+        DOM.printAttack(square, attackResult);
+
+        if(board2.coordShipSunk) {
+            DOM.shipSunk(board2.coordShipSunk);
         }
 
         if(board2.isAllShipsSunk()) {
-            console.log("player win");
+            DOM.showWinnerDialog("player1");
             return;
         }
 
@@ -46,17 +48,20 @@ computerBoard.forEach((square, i) => {
 
         const attackComputerResult = board1.receiveAttack(computerCoords);
 
-        const index = Number(computerCoords.y.toString() + computerCoords.x.toString());
+        const index = indexFromCoords(computerCoords);
 
-        if(attackComputerResult) {
-            playerBoard[index].classList.add("there-is-ship");
-        } else {
-            playerBoard[index].classList.add("there-is-not-ship");
-        }
+        DOM.printAttack(playerBoard[index], attackComputerResult);
 
         if(board1.isAllShipsSunk()) {
-            console.log("computer win");
+            DOM.showWinnerDialog("computer");
             return;
         }
     });
 });
+
+function startGame() {
+    computer = Player();
+    board1 = GameBoard(coordsShip);
+    DOM.renderShips(board1.board);
+    board2 = GameBoard(computer.coordsShips);
+}
