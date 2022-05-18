@@ -8,6 +8,7 @@
 }
 
 body {
+    font-family: Arial, Helvetica, sans-serif;
     width: 100vw;
     height: 100vh;
 }
@@ -40,7 +41,9 @@ body {
     height: 100%;
 }
 
-.ship {
+.ship,
+#computer-board > .there-is-ship.ship:hover,
+#computer-board > .there-is-not-ship.ship:hover {
     background-color: rgb(0, 0, 139);
 }
 

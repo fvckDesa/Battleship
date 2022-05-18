@@ -11,7 +11,7 @@ function GameBoard(shipsCoords) {
     /* array of ships  */
     const ships = new Array(NUM_SHIPS).fill(null).map((pos, i) => new Ship(shipsLength[i]));
 
-    let lastShipSunk;
+    let lastShipSunk = null;
 
     _setBoard();
 

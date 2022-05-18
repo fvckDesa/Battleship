@@ -8,6 +8,12 @@ const coordsShip = [
     { x: 4, y: 4, axis: "x" }
 ];
 
+let board;
+
+beforeEach(() => {
+    board = GameBoard(coordsShip);
+})
+
 function generateAllCoordsOfShip() {
     const coords = [];
     const length = [5, 4, 3, 3, 2];
@@ -23,8 +29,7 @@ function generateAllCoordsOfShip() {
     return coords;
 }
 
-describe("receiveAttack method", () => {
-    const board = GameBoard(coordsShip);
+describe("receiveAttack method", () => { 
     
     test("attack hit", () => {
         expect(board.receiveAttack({ x: 0, y: 3 })).toBe(true);
@@ -38,9 +43,38 @@ describe("receiveAttack method", () => {
 });
 
 test("check if all ships are sunk", () => {
-    const board = GameBoard(coordsShip);
     const allCoordsShip = generateAllCoordsOfShip();
     allCoordsShip.forEach(coord => board.receiveAttack(coord));
 
     expect(board.isAllShipsSunk()).toBe(true);
+});
+
+describe("last ship sunk", () => {
+    test("not sunk", () => {
+        expect(board.coordShipSunk).toBe(null);
+    });
+
+    test("sunk", () => {
+        let expected = [];
+        const allCoordsShip = generateAllCoordsOfShip();
+
+        for(let i = 0; i < 5; i++) {
+            board.receiveAttack(allCoordsShip[i]);
+            expected.push(allCoordsShip[i]);
+        }
+        
+        expect(board.coordShipSunk).toEqual(expected);
+    });
+
+    test("second ship sunk", () => {
+        let expected = [];
+        const allCoordsShip = generateAllCoordsOfShip();
+
+        for(let i = 5; i < 9; i++) {
+            board.receiveAttack(allCoordsShip[i]);
+            expected.push(allCoordsShip[i]);
+        }
+
+        expect(board.coordShipSunk).toEqual(expected);
+    });
 });

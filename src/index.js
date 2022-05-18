@@ -35,9 +35,7 @@ computerBoard.forEach((square, i) => {
 
         DOM.printAttack(square, attackResult);
 
-        if(board2.coordShipSunk) {
-            DOM.shipSunk(board2.coordShipSunk);
-        }
+        board2.coordShipSunk && DOM.shipSunk(board2.coordShipSunk);
 
         if(board2.isAllShipsSunk()) {
             DOM.showWinnerDialog("player1");
