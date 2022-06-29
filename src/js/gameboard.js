@@ -1,72 +1,70 @@
 import Ship from './ship';
 
 const BOARD_LENGTH = 10;
-const NUM_SHIPS = 5;
-const shipsLength = [5, 4, 3, 3, 2];
 
-function GameBoard(shipsCoords) {
-    
-    /* matrix of null value*/  /* eslint-disable-next-line */
-    const board = new Array(BOARD_LENGTH).fill(null).map(pos => new Array(10).fill(null));
-    /* array of ships  */
-    const ships = new Array(NUM_SHIPS).fill(null).map((pos, i) => new Ship(shipsLength[i]));
+function GameBoard(shipsLength) {
+    const board = new Array(BOARD_LENGTH).fill(null).map(() => new Array(10).fill(null));
+    const shipsLengthArr = [...shipsLength];
+    const ships = [];
 
-    let lastShipSunk = null;
-
-    _setBoard();
+    function addShip(coord) {
+        if(shipsLengthArr.length === 0) {
+            throw new Error("all the ships shown have been entered");
+        }
+        if(isValidCoord(coord, shipsLengthArr[0], board)) {
+            const { x, y, axis } = coord;
+            const length = shipsLengthArr.shift();
+            ships.push(new Ship(length));
+            //add Ship on board
+            for(let i = 0; i < length; i++) {
+                if(axis === "y") board[y + i][x] = { numShip: ships.length - 1, shipPos: i };
+                if(axis === "x") board[y][x + i] = { numShip: ships.length - 1, shipPos: i };
+            }
+        }
+    }
 
     function receiveAttack({ x, y }) {
         const attackPos = board[y][x];
         if(attackPos !== null) {
-            const { numShip, pos } = attackPos;
-            ships[numShip].hit(pos);
-            if(ships[numShip].isSunk()) {
-                lastShipSunk = numShip;
-            } else {
-                lastShipSunk = null;
-            }
+            const { numShip, shipPos } = attackPos;
+            ships[numShip].hit(shipPos);
             return true;
-        } else {
-            lastShipSunk = null;
-            return false;
         }
+
+        return false;
     }
 
     function isAllShipsSunk() {
         return ships.every(ship => ship.isSunk());
     }
 
-    function _setBoard() {
-        shipsCoords.forEach((coord, numShip) => {
-            const { x, y, axis } = coord;
-            for(let i = 0; i < shipsLength[numShip]; i++) {
-                if(axis === "y") {
-                    board[y + i][x] = { numShip, pos: i };
-                } else {
-                    board[y][x + i] = { numShip, pos: i };
-                }
-            }
-        });
-    }
-
     return {
+        addShip,
         receiveAttack,
         isAllShipsSunk,
-        board,
-        get coordShipSunk() {
-            if(lastShipSunk === null) return null;
-            const coords = [];
-            for(let y = 0; y < board.length; y++) {
-                for(let x = 0; x < board[y].length; x++) {
-                    if(board[y][x]?.numShip === lastShipSunk) {
-                        coords.push({ x, y });
-                    }
-                }
-            }
-
-            return coords;
+        get board() {
+            return board;
         }
     }
 }
+
+function isValidCoord({ x, y, axis }, length, board) {
+    if (
+      x < 0 ||
+      x >= board.length ||
+      y < 0 ||
+      y >= board.length ||
+      (axis !== "x" && axis !== "y")
+    )
+      return false;
+    for (let i = 0; i < length; i++) {
+      if (
+        (axis === "y" && (y + i < 0 || y + i > board.length || board[y + i][x] != null)) ||
+        (axis === "x" && (x + i < 0 || x + i > board.length || board[y][x + i] != null))
+      )
+        return false;
+    }
+    return true;
+  }
 
 export default GameBoard;

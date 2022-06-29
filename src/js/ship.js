@@ -1,7 +1,7 @@
 
 
 /**
- * It creates a new object with a length property, a hitPoints property, a hit method, and an isSunk
+ * Factory function creates a new object with a length property, a hitPoints property, a hit method, and an isSunk
  * method.
  * 
  * The length property is read-only and is set to the length argument passed to the Ship function.

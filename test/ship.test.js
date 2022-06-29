@@ -69,6 +69,16 @@ describe("test hit method", () => {
         ship.hit(3);
         expect(ship.hitPoints).toEqual([false, true, true, true]);
     });
+
+    test("hit same points", () => {
+        const ship = Ship(5);
+        ship.hit(0);
+        ship.hit(0);
+        ship.hit(2);
+        ship.hit(4);
+        ship.hit(4);
+        expect(ship.hitPoints).toEqual([true, false, true, false, true]);
+    });
 });
 
 describe("test isSunk method", () => {
