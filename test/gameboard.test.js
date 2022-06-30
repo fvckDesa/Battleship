@@ -7,7 +7,6 @@ const shipCoords = [
   { x: 7, y: 7, axis: "x" },
   { x: 4, y: 4, axis: "x" },
 ];
-const lengthArr = [5, 4, 3, 3, 2];
 
 function generateAllCoordsOfShip() {
   const coords = [];
@@ -25,7 +24,7 @@ function generateAllCoordsOfShip() {
 }
 
 describe("add ship on board", () => {
-  const gameBoard = GameBoard(lengthArr);
+  const gameBoard = GameBoard(5);
   const expected = [
     [
       { numShip: 0, shipPos: 0 },
@@ -95,15 +94,15 @@ describe("add ship on board", () => {
   ];
 
   test("valid ship", () => {
-    gameBoard.addShip({ x: 0, y: 0, axis: "y" });
-    gameBoard.addShip({ x: 2, y: 2, axis: "x" });
+    expect(gameBoard.addShip({ x: 0, y: 0, axis: "y" }, 5)).toBe(true);
+    expect(gameBoard.addShip({ x: 2, y: 2, axis: "x" }, 4)).toBe(true);
     expect(gameBoard.board).toEqual(expected);
   });
 
   test("invalid ship board", () => {
-    gameBoard.addShip({ x: 0, y: 0, axis: "x" });
-    gameBoard.addShip({ x: 9, y: 8, axis: "x" });
-    gameBoard.addShip({ x: -6, y: 6, axis: "y" });
+    expect(gameBoard.addShip({ x: 0, y: 0, axis: "x" }, 3)).toBe(false);
+    expect(gameBoard.addShip({ x: 9, y: 8, axis: "x" }, 3)).toBe(false);
+    expect(gameBoard.addShip({ x: -6, y: 6, axis: "y" }, 2)).toBe(false);
     expect(gameBoard.board).toEqual(expected);
   });
 
@@ -116,10 +115,11 @@ describe("add ship on board", () => {
 });
 
 let board;
+const lengthArr = [5, 4, 3, 3, 2];
 
 beforeEach(() => {
-  board = GameBoard(lengthArr);
-  shipCoords.forEach(coord => board.addShip(coord));
+  board = GameBoard(5);
+  shipCoords.forEach((coord, i) => board.addShip(coord, lengthArr[i]));
 });
 
 describe("receiveAttack method", () => {

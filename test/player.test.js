@@ -1,40 +1,40 @@
-import Player from '../src/js/player';
-import isEqual from 'lodash.isequal';
+import AIPlayer from "../src/js/player";
+import GameBoard from "../src/js/gameboard";
 
-function SetNest(arr = []) {
-    const set = new Set();
-    for(const el of arr){
-        add(el);
-    }
+const shipsLength = [5, 4, 3, 3, 2];
 
-    function add(value) {
-        for(const v of set) {
-            if(isEqual(value, v)) return;
+describe("Test random ship coordinates generator", () => {
+  for (let i = 1; i <= 15; i++) {
+    const gameBoard = GameBoard(5);
+    const player = AIPlayer();
+    test("generate random coords" + i, () => {
+      for (const length of shipsLength) {
+        const coord = player.randomShipCoord(gameBoard.board, length);
+        expect(gameBoard.addShip(coord, length)).toBe(true);
+      }
+    });
+  }
+});
+
+describe("Test random attack", () => {
+    test("generate max 100 random attack", () => {
+        const player = AIPlayer();
+        const attackStack = [];
+        for(let i = 0; i < 100; i++) {
+            attackStack.push(player.randomAttack());
         }
-        set.add(value);
-    }
-    function deleteValue(value) {
-        for(const v of set) {
-            if(isEqual(value, v)) {
-                set.delete(v);
-            }
-        }
-    }
-    return {
-        get length() {
-            return set.size;
-        },
-        add,
-        deleteValue
-    }
-}
+        expect(attackStack.length).toBe(100);
+        expect(() => player.randomAttack()).toThrow(Error);
+    });
 
-test("computer player must give all different coordinate", () => {
-    const player = Player();
-    const moves = SetNest();
-    for(let i = 0; i < 100; i++) {
-    
-        moves.add(player.getCoords());
-    }
-    expect(moves.length).toBe(100);
+    test("generate 100 different random attack", () => {
+        const player = AIPlayer();
+        const attackStack = [];
+        for(let i = 0; i < 100; i++) {
+            const attackCoords = player.randomAttack();
+            expect(attackStack.find(el => el.x === attackCoords.x && el.y === attackCoords.y)).toBe(undefined);
+            attackStack.push(attackCoords);
+        }
+        expect(attackStack.length).toBe(100);
+    });
 });

@@ -1,83 +1,44 @@
-import isEqual from 'lodash.isequal';
+import { isValidCoord } from "./utility";
 
-const shipsLength = [5, 4, 3, 3, 2];
+function AIPlayer() {
+    const coordsList = [];
 
-function Player() {
-  const coordsList = new Set();
+    function randomShipCoord(board, length) {
+        let coord;
 
-  function getCoords() {
-    const coords = {};
+        do {
+            coord = randomCoords();
+            coord.axis = Math.floor(Math.random() * 2) ? "x" : "y";
+        } while(!isValidCoord(coord, length, board));
 
-    do {
-      coords.x = _randomCoord();
-      coords.y = _randomCoord();
-    } while (_nestResearch(coords));
-
-    coordsList.add(coords);
-
-    return coords;
-  }
-
-  function _randomCoord() {
-    return Math.floor(Math.random() * 10);
-  }
-
-  function _nestResearch({ x, y }) {
-    for (const coords of coordsList) {
-      if (coords.x === x && coords.y === y) return true;
+        return coord;
     }
-    return false;
-  }
 
-  function _generateCoordsShip() {
-    const coords = [];
-    for (const length of shipsLength) {
-      const axis = Math.floor(Math.random() * 10) + 1 > 5 ? "x" : "y";
-      let x, y;
-      do {
-        x = _randomCoord();
-        y = _randomCoord();
-      } while (
-        (axis === "x" && x + length > 9) ||
-        (axis === "y" && y + length > 9) ||
-        noOverlap(coords, x, y, axis, length)
-      );
-
-      coords.push({ x, y, axis });
-    }
-    return coords;
-  }
-
-  return {
-    getCoords,
-    coordsShips: _generateCoordsShip(),
-  };
-}
-
-function noOverlap(coords, x, y, axis, length ) {
-    for(let i = 0; i < coords.length; i++) {
-        const coord = coords[i];
-        const allCoords1 = generateCoords(coord.x, coord.y, coord.axis, shipsLength[i]);
-        const allCoords2 = generateCoords(x, y, axis, length);
-        for(const coord1 of allCoords1) {
-            for(const coord2 of allCoords2) {
-                if(isEqual(coord1, coord2)) return true;
-            }
+    function randomAttack() {
+        if(coordsList.length === 100) {
+            throw new Error("Max possible attacks are 100");
         }
+        let coord;
+        do {
+            coord = randomCoords();
+        }while(coordsList.find(el => el.x === coord.x && el.y === coord.y));
+
+        coordsList.push(coord);
+
+        return coord;
     }
-    return false;
+
+    return {
+        randomShipCoord,
+        randomAttack
+    };
 }
 
-function generateCoords( x, y, axis, length ) {
-    const arr = [];
-  for (let i = 0; i < length; i++) {
-    if (axis === "y") {
-      arr.push({x, y: y + i});
-    } else {
-        arr.push({x: x + i, y});
-    }
-  }
-  return arr;
+function randomCoords() {
+    return {
+        x: Math.floor(Math.random() * 10),
+        y: Math.floor(Math.random() * 10)
+    };
 }
 
-export default Player;
+export default AIPlayer;
