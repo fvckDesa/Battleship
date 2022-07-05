@@ -14,10 +14,16 @@ function renderBoard(containerId) {
   document.querySelector(containerId).replaceChildren(...nodes);
 }
 
-function renderShip(DOMBoard, board) {
+function renderAllShip(DOMBoard, board) {
+  for(let i = 0; i < 5; i++) {
+    renderShip(DOMBoard, board, i);
+  }
+}
+
+function renderShip(DOMBoard, board, numShip) {
   for (const i in board) {
     for (const j in board[0]) {
-      if (board[i][j] != null) {
+      if (board[i][j]?.numShip === numShip) {
         DOMBoard[Number(i + j)].classList.add("ship");
       }
     }
@@ -28,9 +34,16 @@ function attackBoard(DOMBoard, gameBoard, computer, computerGameBoard) {
   DOMBoard.forEach((cell, i) => {
     cell.addEventListener("click", () => {
         if(cell.classList.contains("hit") || cell.classList.contains("miss")) return;
-        renderAttack(cell, gameBoard.receiveAttack({ x: i % 10, y: Math.floor(i / 10) }));
+        // attack gameBoard
+        let coords = { x: i % 10, y: Math.floor(i / 10) }
+        renderAttack(cell, gameBoard.receiveAttack(coords));
+        // if new ship sunk in gameBoard render the ship in DOMBoard
+        if(gameBoard.isSunk()) {
+          renderShip(DOMBoard, gameBoard.board, gameBoard.board[coords.y][coords.x].numShip);
+        }
         if(Game.gameOver()) return;
-        const coords = computer.randomAttack();
+        // computer attack opposite board
+        coords = computer.randomAttack();
         renderAttack(elements.cellGameBoard1[coords.x + coords.y * 10], computerGameBoard.receiveAttack(coords));
     });
   });
@@ -42,8 +55,7 @@ function renderAttack(cell, attackResult) {
   } else {
     cell.classList.add("miss");
   }
-
   Game.gameOver();
 }
 
-export { renderShip, attackBoard, renderAttack, renderBoard };
+export { renderAllShip, attackBoard, renderAttack, renderBoard };

@@ -11,11 +11,11 @@ const Game = (() => {
   let gameBoard1, gameBoard2, player, computer;
 
   function start() {
+    // create new instances of gameboard and player
     gameBoard1 = GameBoard(NUM_SHIPS);
     gameBoard2 = GameBoard(NUM_SHIPS);
     player = Player();
     computer = Player();
-
     // generate random coords for ships
     for(const length of SHIPS_LENGTH) {
       gameBoard1.addShip(player.randomShipCoord(gameBoard1.board, length), length);
@@ -25,7 +25,7 @@ const Game = (() => {
     DOMBoard.renderBoard("#board1");
     DOMBoard.renderBoard("#board2");
     // render ships on board 1
-    DOMBoard.renderShip(elements.cellGameBoard1, gameBoard1.board);
+    DOMBoard.renderAllShip(elements.cellGameBoard1, gameBoard1.board);
     // dom attack board
     DOMBoard.attackBoard(elements.cellGameBoard2, gameBoard2, computer, gameBoard1);
   }

@@ -8,6 +8,7 @@ function GameBoard(numShips) {
     .fill(null)
     .map(() => new Array(10).fill(null));
   const ships = [];
+  let shipsSunkCount = 0;
 
   function addShip(coord, length) {
     if (ships.length === numShips) {
@@ -43,10 +44,17 @@ function GameBoard(numShips) {
     return ships.every((ship) => ship.isSunk());
   }
 
+  function isSunk() {
+    if(shipsSunkCount === ships.filter(ship => ship.isSunk()).length) return false;
+    shipsSunkCount++;
+    return true;
+  }
+
   return {
     addShip,
     receiveAttack,
     everyShipsSunk,
+    isSunk,
     get board() {
       return board;
     },
