@@ -1,6 +1,6 @@
 import { isValidCoord } from "./utility";
 
-function AIPlayer() {
+function Player() {
     const coordsList = [];
 
     function randomShipCoord(board, length) {
@@ -18,7 +18,9 @@ function AIPlayer() {
         if(coordsList.length === 100) {
             throw new Error("Max possible attacks are 100");
         }
+
         let coord;
+        
         do {
             coord = randomCoords();
         }while(coordsList.find(el => el.x === coord.x && el.y === coord.y));
@@ -41,4 +43,4 @@ function randomCoords() {
     };
 }
 
-export default AIPlayer;
+export default Player;

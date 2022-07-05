@@ -1,4 +1,4 @@
-import AIPlayer from "../src/js/player";
+import Player from "../src/js/player";
 import GameBoard from "../src/js/gameboard";
 
 const shipsLength = [5, 4, 3, 3, 2];
@@ -6,7 +6,7 @@ const shipsLength = [5, 4, 3, 3, 2];
 describe("Test random ship coordinates generator", () => {
   for (let i = 1; i <= 15; i++) {
     const gameBoard = GameBoard(5);
-    const player = AIPlayer();
+    const player = Player();
     test("generate random coords" + i, () => {
       for (const length of shipsLength) {
         const coord = player.randomShipCoord(gameBoard.board, length);
@@ -18,7 +18,7 @@ describe("Test random ship coordinates generator", () => {
 
 describe("Test random attack", () => {
     test("generate max 100 random attack", () => {
-        const player = AIPlayer();
+        const player = Player();
         const attackStack = [];
         for(let i = 0; i < 100; i++) {
             attackStack.push(player.randomAttack());
@@ -28,7 +28,7 @@ describe("Test random attack", () => {
     });
 
     test("generate 100 different random attack", () => {
-        const player = AIPlayer();
+        const player = Player();
         const attackStack = [];
         for(let i = 0; i < 100; i++) {
             const attackCoords = player.randomAttack();

@@ -39,14 +39,14 @@ function GameBoard(numShips) {
     return false;
   }
 
-  function isAllShipsSunk() {
+  function everyShipsSunk() {
     return ships.every((ship) => ship.isSunk());
   }
 
   return {
     addShip,
     receiveAttack,
-    isAllShipsSunk,
+    everyShipsSunk,
     get board() {
       return board;
     },

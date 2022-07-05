@@ -138,5 +138,5 @@ test("check if all ships are sunk", () => {
   const allCoordsShip = generateAllCoordsOfShip();
   allCoordsShip.forEach((coord) => board.receiveAttack(coord));
 
-  expect(board.isAllShipsSunk()).toBe(true);
+  expect(board.everyShipsSunk()).toBe(true);
 });
