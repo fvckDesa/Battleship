@@ -11,8 +11,6 @@ const Game = (() => {
   let gameBoard1, gameBoard2, player, computer;
 
   function start() {
-    DOMBoard.clearBoard();
-
     gameBoard1 = GameBoard(NUM_SHIPS);
     gameBoard2 = GameBoard(NUM_SHIPS);
     player = Player();
@@ -23,7 +21,9 @@ const Game = (() => {
       gameBoard1.addShip(player.randomShipCoord(gameBoard1.board, length), length);
       gameBoard2.addShip(computer.randomShipCoord(gameBoard2.board, length), length);
     }
-
+    //render board1 and board2
+    DOMBoard.renderBoard("#board1");
+    DOMBoard.renderBoard("#board2");
     // render ships on board 1
     DOMBoard.renderShip(elements.cellGameBoard1, gameBoard1.board);
     // dom attack board
