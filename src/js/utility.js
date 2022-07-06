@@ -19,4 +19,14 @@ function isValidCoord({ x, y, axis }, length, board) {
   return true;
 }
 
-export { isValidCoord };
+function createSquareMatrix(length) {
+  return new Array(length)
+    .fill(null)
+    .map(() => new Array(length).fill(null));
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export { isValidCoord, createSquareMatrix, delay };

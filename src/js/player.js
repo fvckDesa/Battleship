@@ -1,21 +1,23 @@
 import { isValidCoord } from "./utility";
+import GameBoard from "./gameboard";
 
-function Player() {
-    const coordsList = [];
+function Player(shipLengthArr = []) {
+    const attacksList = [];
+    let gameBoard = GameBoard(shipLengthArr.length);
 
-    function randomShipCoord(board, length) {
+    function randomShipCoord(length) {
         let coord;
 
         do {
             coord = randomCoords();
             coord.axis = Math.floor(Math.random() * 2) ? "x" : "y";
-        } while(!isValidCoord(coord, length, board));
+        } while(!isValidCoord(coord, length, gameBoard.board));
 
         return coord;
     }
 
     function randomAttack() {
-        if(coordsList.length === 100) {
+        if(attacksList.length === 100) {
             throw new Error("Max possible attacks are 100");
         }
 
@@ -23,16 +25,42 @@ function Player() {
         
         do {
             coord = randomCoords();
-        }while(coordsList.find(el => el.x === coord.x && el.y === coord.y));
+        }while(attacksList.find(el => el.x === coord.x && el.y === coord.y));
 
-        coordsList.push(coord);
+        attacksList.push(coord);
 
         return coord;
     }
 
+    function setShips(coordsArr) {
+        if(coordsArr.length !== shipLengthArr.length) {
+            throw new Error("num of coords and num of length must be same");
+        }
+        gameBoard = GameBoard(shipLengthArr);
+        for(const i in coordsArr) {
+            gameBoard.addShip(coordsArr[i], shipLengthArr[i]);
+        }
+    }
+
+    function setRandomShips() {
+        gameBoard = GameBoard(shipLengthArr);
+        const shipsCoords = [];
+        for(const length of shipLengthArr) {
+            const coord = randomShipCoord(length);
+            shipsCoords.push(coord);
+            gameBoard.addShip(coord, length);
+        }
+
+        return shipsCoords;
+    }
+
     return {
-        randomShipCoord,
-        randomAttack
+        setShips,
+        setRandomShips,
+        randomAttack,
+        get gameBoard() {
+            return gameBoard;
+        }
     };
 }
 

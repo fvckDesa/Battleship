@@ -1,12 +1,10 @@
 import Ship from "./ship";
-import { isValidCoord } from "./utility";
+import { isValidCoord, createSquareMatrix } from "./utility";
 
 const BOARD_LENGTH = 10;
 
 function GameBoard(numShips) {
-  const board = new Array(BOARD_LENGTH)
-    .fill(null)
-    .map(() => new Array(10).fill(null));
+  const board = createSquareMatrix(BOARD_LENGTH);
   const ships = [];
   let shipsSunkCount = 0;
 

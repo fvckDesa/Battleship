@@ -3,6 +3,8 @@ function getAll(selector) {
 }
 
 export default {
+    board1: document.querySelector("#board1"),
+    board2: document.querySelector("#board2"),
     get cellGameBoard1() {
         return getAll("#board1 .board-cell");
     },

@@ -1,39 +1,33 @@
-import GameBoard from "./gameboard";
 import Player from "./player";
 import elements from "./DOM/elements";
-import * as DOMBoard from "./DOM/DOMboard";
+import * as DOMBoard from "./DOM/DOM-board";
 import * as winnerBanner from "./DOM/winnerBanner";
 
-const NUM_SHIPS = 5;
 const SHIPS_LENGTH = [5, 4, 3, 3, 2];
 
 const Game = (() => {
-  let gameBoard1, gameBoard2, player, computer;
+  let player, computer;
 
   function start() {
     // create new instances of gameboard and player
-    gameBoard1 = GameBoard(NUM_SHIPS);
-    gameBoard2 = GameBoard(NUM_SHIPS);
-    player = Player();
-    computer = Player();
+    player = Player(SHIPS_LENGTH);
+    computer = Player(SHIPS_LENGTH);
     // generate random coords for ships
-    for(const length of SHIPS_LENGTH) {
-      gameBoard1.addShip(player.randomShipCoord(gameBoard1.board, length), length);
-      gameBoard2.addShip(computer.randomShipCoord(gameBoard2.board, length), length);
-    }
+    player.setRandomShips();
+    computer.setRandomShips();
     //render board1 and board2
-    DOMBoard.renderBoard("#board1");
-    DOMBoard.renderBoard("#board2");
+    DOMBoard.renderBoard(elements.board1);
+    DOMBoard.renderBoard(elements.board2);
     // render ships on board 1
-    DOMBoard.renderAllShip(elements.cellGameBoard1, gameBoard1.board);
+    DOMBoard.renderAllShip(elements.cellGameBoard1, player.gameBoard.board);
     // dom attack board
-    DOMBoard.attackBoard(elements.cellGameBoard2, gameBoard2, computer, gameBoard1);
+    DOMBoard.attackBoard(elements.cellGameBoard2, computer.gameBoard, computer, player.gameBoard);
   }
 
   function gameOver() {
-    if(!gameBoard1.everyShipsSunk() && !gameBoard2.everyShipsSunk()) return false;
+    if(!player.gameBoard.everyShipsSunk() && !computer.gameBoard.everyShipsSunk()) return false;
 
-    const winner = gameBoard1.everyShipsSunk() ? "Computer" : "Player";
+    const winner = player.gameBoard.everyShipsSunk() ? "Computer" : "Player";
 
     winnerBanner.renderWinnerBanner(winner);
 

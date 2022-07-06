@@ -45,7 +45,7 @@ body {
     cursor: crosshair;
 }
 
-.board-cell:hover {
+.board-cell[interactive="true"]:hover {
     background-color: rgba(0, 255, 0, 0.3);
 }
 
@@ -89,12 +89,13 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.hit:hover,
-.miss:hover {
+.hit[interactive="true"]:hover,
+.miss[interactive="true"]:hover {
     background-color: rgba(255, 0, 0, 0.3);
     cursor: not-allowed;
 }
 
+.place-ships-container,
 .winner-banner,
 .pop-up {
     display: flex;
@@ -102,6 +103,7 @@ body {
     align-items: center;
 }
 
+.place-ships-container,
 .winner-banner {
     position: absolute;
     top: 0;
@@ -127,4 +129,8 @@ body {
 
 .pop-up > button {
     padding: 0.5rem;
+}
+
+.place-ships-container {
+    z-index: 2;
 }
