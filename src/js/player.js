@@ -32,18 +32,12 @@ function Player(shipLengthArr = []) {
         return coord;
     }
 
-    function setShips(coordsArr) {
-        if(coordsArr.length !== shipLengthArr.length) {
-            throw new Error("num of coords and num of length must be same");
-        }
-        gameBoard = GameBoard(shipLengthArr);
-        for(const i in coordsArr) {
-            gameBoard.addShip(coordsArr[i], shipLengthArr[i]);
-        }
+    function resetGameBoard() {
+        gameBoard = GameBoard(shipLengthArr.length);
     }
 
     function setRandomShips() {
-        gameBoard = GameBoard(shipLengthArr);
+        gameBoard = GameBoard(shipLengthArr.length);
         const shipsCoords = [];
         for(const length of shipLengthArr) {
             const coord = randomShipCoord(length);
@@ -55,7 +49,7 @@ function Player(shipLengthArr = []) {
     }
 
     return {
-        setShips,
+        resetGameBoard,
         setRandomShips,
         randomAttack,
         get gameBoard() {

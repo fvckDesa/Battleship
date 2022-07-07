@@ -20,9 +20,8 @@ const Game = (() => {
     DragAndDrop.activeDragAndDrop(elements.boardContainer1, player);
   }
 
-  function loop(playerCoords, computerCoords) {
-    playerCoords ? player.setShips(playerCoords) : player.setRandomShips();
-    computerCoords ? computer.setShips(computerCoords) : computer.setRandomShips();
+  function loop() {
+    computer.setRandomShips();
     // dom attack board
     DOMBoard.attackBoard(elements.cellGameBoard2, computer.gameBoard, computer, player.gameBoard);
   }
