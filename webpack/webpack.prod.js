@@ -6,7 +6,7 @@ const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = merge(common, {
-  entry: "./src/index.js",
+  entry: ["regenerator-runtime/runtime.js", "./src/index.js"],
   mode: "production",
   plugins: [
     new OptimizeCssAssetsPlugin(),
