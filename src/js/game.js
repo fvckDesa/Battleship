@@ -17,7 +17,7 @@ const Game = (() => {
     DOMBoard.renderBoard(elements.board1);
     DOMBoard.renderBoard(elements.board2);
     // active drag and drop on board1
-    DragAndDrop.activeDragAndDrop(elements.boardContainer1, player);
+    DragAndDrop.activeDragAndDrop(elements.boardContainer1, player, elements.board2);
   }
 
   function loop() {

@@ -1,5 +1,6 @@
 import { isValidCoord } from "../utility";
 import { renderShip, renderAllShip, renderBoard } from "./DOM-board";
+import Game from "../game";
 
 let draggableShips = [];
 let container;
@@ -50,7 +51,8 @@ function renderDraggableShip(dragShip = "") {
 function activeRandomBtn(player) {
   container.randomBtn.addEventListener("click", () => {
     reset(player);
-    renderDraggableShip("");
+    setDraggableShips([]);
+    renderDraggableShip();
     player.setRandomShips();
     renderAllShip(container.boardCells, player.gameBoard.board);
   });
@@ -59,15 +61,15 @@ function activeRandomBtn(player) {
 function activeResetBtn(player) {
   container.resetBtn.addEventListener("click", () => {
     reset(player);
+    setDraggableShips(player.shipLengthArr);
     renderDraggableShip(draggableShips.shift());
   });
 }
 
 function reset(player) {
   player.resetGameBoard();
-    renderBoard(container.board);
-    setDraggableShips(player.shipLengthArr);
-    activeDrop(player);
+  renderBoard(container.board);
+  activeDrop(player);
 }
 
 function setDraggableShips(lengthArr) {
@@ -93,7 +95,6 @@ function activeDrop(player) {
       coord.axis = e.dataTransfer.getData("axis");
       // remove offset from coord
       coord.axis === "x" ? (coord.x -= offset) : (coord.y -= offset);
-      console.log(coord);
       // add ship to board
       if (isValidCoord(coord, length, player.gameBoard.board)) {
         player.gameBoard.addShip(coord, length);
@@ -105,7 +106,32 @@ function activeDrop(player) {
   });
 }
 
-function activeDragAndDrop(boardContainer, player) {
+function createStart() {
+  const startContainer = document.createElement("div");
+  startContainer.classList.add("start-container");
+
+  const startBtn = document.createElement("button");
+  startBtn.classList.add("start-btn");
+  startBtn.innerText = "Start";
+
+  startBtn.addEventListener("click", () => {
+    if(container.shipsContainer.children.length > 0) return;
+    
+    startContainer.remove();
+    container.setShips.classList.add("hidden");
+    Game.loop();
+  });
+
+  startContainer.appendChild(startBtn);
+
+  return startContainer;
+}
+
+function renderStartBtn(otherBoard) {
+  otherBoard.appendChild(createStart());
+}
+
+function activeDragAndDrop(boardContainer, player, otherBoard) {
   container = boardContainer;
 
   renderSetShip();
@@ -119,6 +145,8 @@ function activeDragAndDrop(boardContainer, player) {
   activeResetBtn(player);
 
   activeDrop(player);
+
+  renderStartBtn(otherBoard);
 }
 
 export { activeDragAndDrop };
