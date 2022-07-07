@@ -7,12 +7,27 @@
     <title>Battleship</title>
   </head>
   <body>
-    <!-- <div class="place-ships-container">
-      <div class="board" id="place-ship"></div>
-    </div> -->
     <div class="game">
-      <div class="board" id="board1"></div>
-      <div class="board" id="board2"></div>
+      <div class="board-container">
+        <div class="board" id="board1"></div>
+        <div class="set-ships hidden" id="set-ships1">
+          <div class="btn-container">
+            <button id="random-board">Random board</button>
+            <button id="reset-board">Reset board</button>
+          </div>
+          <div class="ships-container"></div>
+        </div>
+      </div>
+      <div class="board-container">
+        <div class="board" id="board2"></div>
+        <div class="set-ships hidden" id="set-ships2">
+          <div class="btn-container">
+            <button id="random-board">Random board</button>
+            <button id="reset-board">Reset board</button>
+          </div>
+          <div class="ships-container"></div>
+        </div>
+      </div>
     </div>
     <div class="winner-banner hidden">
       <div class="pop-up">

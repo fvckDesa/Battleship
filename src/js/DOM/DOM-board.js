@@ -31,25 +31,25 @@ function renderShip(BoardCells, board, numShip) {
   }
 }
 
-function attackBoard(EnemyBoardCells, EnemyGameBoard, computer, computerGameBoard) {
-  EnemyBoardCells.forEach((cell, i) => {
+function attackBoard(enemyBoardCells, enemyGameBoard, enemy, myGameBoard) {
+  enemyBoardCells.forEach((cell, i) => {
     cell.setAttribute("interactive", "true");
     
     cell.addEventListener("click", async () => {
         if(cell.classList.contains("hit") || cell.classList.contains("miss")) return;
         // attack gameBoard
         let coords = { x: i % 10, y: Math.floor(i / 10) }
-        renderAttack(cell, EnemyGameBoard.receiveAttack(coords));
+        renderAttack(cell, enemyGameBoard.receiveAttack(coords));
         // if new ship sunk in gameBoard render the ship in enemy board
-        if(EnemyGameBoard.isSunk()) {
-          const numShipSunk = EnemyGameBoard.board[coords.y][coords.x].numShip;
-          renderShip(EnemyBoardCells, EnemyGameBoard.board, numShipSunk);
+        if(enemyGameBoard.isSunk()) {
+          const numShipSunk = enemyGameBoard.board[coords.y][coords.x].numShip;
+          renderShip(enemyBoardCells, enemyGameBoard.board, numShipSunk);
         }
         if(Game.gameOver()) return;
         await delay(300);
-        // computer attack opposite board
-        coords = computer.randomAttack();
-        renderAttack(elements.cellGameBoard1[coords.x + coords.y * 10], computerGameBoard.receiveAttack(coords));
+        // enemy attack opposite board
+        coords = enemy.randomAttack();
+        renderAttack(elements.cellGameBoard1[coords.x + coords.y * 10], myGameBoard.receiveAttack(coords));
     });
   });
 }
@@ -63,4 +63,4 @@ function renderAttack(cell, attackResult) {
   Game.gameOver();
 }
 
-export { renderAllShip, attackBoard, renderAttack, renderBoard };
+export { renderShip, renderAllShip, attackBoard, renderAttack, renderBoard };

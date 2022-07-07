@@ -8,7 +8,11 @@
 }
 
 body,
-.game {
+.game,
+.board-container,
+.set-ships,
+.btn-container,
+.ships-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,9 +20,11 @@ body,
 }
 
 body {
+    align-items: flex-end;
     font-family: Arial, Helvetica, sans-serif;
     width: 100vw;
     height: 100vh;
+    padding-bottom: 5rem;
 }
 
 .game {
@@ -26,12 +32,41 @@ body {
     padding-inline: 5rem;
 }
 
+.board-container {
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.set-ships {
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 5rem;
+}
+
+.btn-container {
+    justify-content: space-around;
+    width: 100%;
+    height: 40%;
+}
+
+.btn-container > button {
+    width: 45%;
+    padding-block: 0.3rem;
+}
+
+.ships-container {
+    width: 100%;
+    height: 60%;
+}
+
 .board {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    width: 25rem;
-    height: 25rem;
+    width: 22rem;
+    height: 22rem;
     border-top: solid 1px #000;
     border-left: solid 1px #000;
 }
@@ -54,6 +89,22 @@ body {
     width: calc(100% + 2px);
     height: calc(100% + 2px);
     transform: translate(-1px, -1px);
+}
+
+.drag-ship {
+    display: flex;
+    background-color: #c5d2fd;
+}
+
+.drag-ship.rotate {
+    transform: rotate(90deg);
+}
+
+.drag-ship-cell {
+    /* 22rem -> board width */
+    /* 22rem / 10 -> cell width */
+    width: calc(22rem / 10);
+    height: calc(22rem / 10);
 }
 
 .hit::before,
@@ -95,7 +146,6 @@ body {
     cursor: not-allowed;
 }
 
-.place-ships-container,
 .winner-banner,
 .pop-up {
     display: flex;
@@ -103,7 +153,6 @@ body {
     align-items: center;
 }
 
-.place-ships-container,
 .winner-banner {
     position: absolute;
     top: 0;
@@ -113,8 +162,8 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.winner-banner.hidden {
-    display: none;
+.hidden {
+    visibility: hidden;
 }
 
 .pop-up {
@@ -131,6 +180,18 @@ body {
     padding: 0.5rem;
 }
 
-.place-ships-container {
-    z-index: 2;
+.start-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.start-btn {
+    padding: 0.5rem;
 }

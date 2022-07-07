@@ -60,7 +60,8 @@ function Player(shipLengthArr = []) {
         randomAttack,
         get gameBoard() {
             return gameBoard;
-        }
+        },
+        shipLengthArr
     };
 }
 

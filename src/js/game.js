@@ -1,7 +1,8 @@
 import Player from "./player";
 import elements from "./DOM/elements";
 import * as DOMBoard from "./DOM/DOM-board";
-import * as winnerBanner from "./DOM/winnerBanner";
+import * as winnerBanner from "./DOM/winner-banner";
+import * as DragAndDrop from "./DOM/drag-and-drop";
 
 const SHIPS_LENGTH = [5, 4, 3, 3, 2];
 
@@ -9,17 +10,19 @@ const Game = (() => {
   let player, computer;
 
   function start() {
-    // create new instances of gameboard and player
+    // create new instances of player
     player = Player(SHIPS_LENGTH);
     computer = Player(SHIPS_LENGTH);
-    // generate random coords for ships
-    player.setRandomShips();
-    computer.setRandomShips();
     //render board1 and board2
     DOMBoard.renderBoard(elements.board1);
     DOMBoard.renderBoard(elements.board2);
-    // render ships on board 1
-    DOMBoard.renderAllShip(elements.cellGameBoard1, player.gameBoard.board);
+    // active drag and drop on board1
+    DragAndDrop.activeDragAndDrop(elements.boardContainer1, player);
+  }
+
+  function loop(playerCoords, computerCoords) {
+    playerCoords ? player.setShips(playerCoords) : player.setRandomShips();
+    computerCoords ? computer.setShips(computerCoords) : computer.setRandomShips();
     // dom attack board
     DOMBoard.attackBoard(elements.cellGameBoard2, computer.gameBoard, computer, player.gameBoard);
   }
@@ -36,6 +39,7 @@ const Game = (() => {
 
   return {
     start,
+    loop,
     gameOver
   }
 })();
